@@ -1,0 +1,67 @@
+# ── Virtual Environment ───────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+
+# ── Python cache ──────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# ── Jupyter Notebook checkpoints ─────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── ML Model artifacts (large binaries) ──────────────
+ml-model/models/*.pkl
+ml-model/models/*.joblib
+ml-model/models/*.h5
+
+# ── Dataset — raw data (keep cleaned, ignore raw) ────
+# Uncomment below if raw data is sensitive/large:
+# ml-model/dataset/raw_data.csv
+
+# ── Reports / generated images ───────────────────────
+ml-model/reports/*.png
+ml-model/reports/*.jpg
+
+# ── OS files ─────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE / Editor ─────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# ── Environment variables (NEVER commit secrets) ─────
+.env
+.env.*
+*.env
+
+# ── Node / Frontend ───────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+
+# ── Backend ───────────────────────────────────────────
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+
+# ── Logs ─────────────────────────────────────────────
+*.log
+logs/
+
+# ── Coverage / testing ───────────────────────────────
+.coverage
+htmlcov/
+.pytest_cache/
