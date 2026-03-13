@@ -223,3 +223,126 @@ class PaginatedResponse(BaseModel):
 class MessageResponse(BaseModel):
     message: str
     success: bool = True
+
+
+
+from pydantic import BaseModel, Field, field_validator
+from typing   import List, Optional
+from enum     import Enum
+ 
+ 
+# ── Enums ──────────────────────────────────────────────────────────────────
+class GenderEnum(str, Enum):
+    male   = "male"
+    female = "female"
+    other  = "other"
+ 
+class EducationLevel(str, Enum):
+    high_school = "high_school"   # edu_level = 1
+    undergrad   = "undergrad"     # edu_level = 2
+    postgrad    = "postgrad"      # edu_level = 3
+    phd         = "phd"           # edu_level = 4
+ 
+class BurnoutRisk(str, Enum):
+    low    = "Low"
+    medium = "Medium"
+    high   = "High"
+ 
+ 
+# ── Request Model ──────────────────────────────────────────────────────────
+class BurnoutAnalysisRequest(BaseModel):
+    """
+    What the frontend sends to POST /api/burnout/analyze
+    All fields match the ML model's 14 input features.
+    """
+ 
+    # Demographics
+    age:               int   = Field(..., ge=13, le=100,
+                                     description="Student age (13–100)")
+    weight:            float = Field(..., ge=30,
+                                     description="Weight in kg (≥30)")
+    gender:            GenderEnum
+    educational_level: EducationLevel
+ 
+    # Behavioral
+    study_hours:  float = Field(..., ge=0, le=24,
+                                description="Average study hours per day")
+    sleep_hours:  float = Field(..., ge=0, le=24,
+                                description="Average sleep hours per day")
+ 
+    # 1–5 Vibe Scales
+    overwhelmed_score:    int = Field(..., ge=1, le=5,
+                                      description="How often they feel overwhelmed (1=never, 5=always)")
+    motivation_score:     int = Field(..., ge=1, le=5,
+                                      description="Current motivation level (1=very low, 5=very high)")
+    exhaustion_score:     int = Field(..., ge=1, le=5,
+                                      description="Mental exhaustion level (1=none, 5=severe)")
+    concentration_score:  int = Field(..., ge=1, le=5,
+                                      description="Difficulty concentrating (1=easy, 5=very hard)")
+    anxiety_score:        int = Field(..., ge=1, le=5,
+                                      description="Exam anxiety level (1=none, 5=severe)")
+    balance_score:        int = Field(..., ge=1, le=5,
+                                      description="Schedule balance (1=chaotic, 5=very balanced)")
+    procrastination_score:int = Field(..., ge=1, le=5,
+                                      description="Procrastination frequency (1=never, 5=always)")
+ 
+    # Checkboxes — list of selected symptom strings
+    symptoms: List[str] = Field(
+        default=[],
+        description="List of selected burnout symptoms from checklist"
+    )
+ 
+    @field_validator("symptoms")
+    @classmethod
+    def validate_symptoms(cls, v):
+        VALID_SYMPTOMS = {
+            "headaches", "irritability", "insomnia",
+            "appetite_changes", "difficulty_focusing",
+            "social_withdrawal", "physical_fatigue", "emotional_numbness"
+        }
+        for symptom in v:
+            if symptom not in VALID_SYMPTOMS:
+                raise ValueError(f"Invalid symptom: '{symptom}'. "
+                                 f"Valid options: {sorted(VALID_SYMPTOMS)}")
+        return v
+ 
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "age": 21,
+                "weight": 65.0,
+                "gender": "female",
+                "educational_level": "undergrad",
+                "study_hours": 11.0,
+                "sleep_hours": 4.5,
+                "overwhelmed_score": 5,
+                "motivation_score": 1,
+                "exhaustion_score": 5,
+                "concentration_score": 4,
+                "anxiety_score": 5,
+                "balance_score": 1,
+                "procrastination_score": 4,
+                "symptoms": ["insomnia", "headaches", "social_withdrawal"]
+            }
+        }
+    }
+ 
+ 
+# ── Response Models ────────────────────────────────────────────────────────
+class BurnoutAnalysisResponse(BaseModel):
+    """What the API returns after prediction."""
+    burnout_risk:        BurnoutRisk
+    confidence_scores:   dict              # {"Low": 0.1, "Medium": 0.3, "High": 0.6}
+    symptom_count:       int
+    top_risk_factors:    List[str]         # top 3 features driving the prediction
+    recommendations:     List[str]         # personalized suggestions
+    streak_updated:      bool   = False
+    current_streak:      int    = 0
+ 
+ 
+class StreakResponse(BaseModel):
+    """Response after updating a user's streak."""
+    streak_count:      int
+    last_activity_date: str
+    streak_updated:    bool
+    message:           str

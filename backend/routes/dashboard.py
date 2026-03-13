@@ -7,7 +7,7 @@ from models.study_log import StudyLog
 from models.sleep_log import SleepLog
 from models.burnout_assessment import BurnoutAssessment
 from models.recommendation import Recommendation
-from schemas import DashboardStats, BurnoutAssessmentResponse, RecommendationResponse
+from backend.schemas.schemas import DashboardStats, BurnoutAssessmentResponse, RecommendationResponse
 from core.security import get_current_user
 from services.analytics import get_streak
 

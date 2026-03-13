@@ -42,9 +42,9 @@ desktop.ini
 *.sublime-workspace
 
 # ── Environment variables (NEVER commit secrets) ─────
-.env
-.env.*
-*.env
+.venv
+.venv.*
+*.venv
 
 # ── Node / Frontend ───────────────────────────────────
 node_modules/
@@ -65,3 +65,6 @@ logs/
 .coverage
 htmlcov/
 .pytest_cache/
+
+# ── ML ─────────────────────────────────────────────
+ml-model/models/burnout_model.joblib

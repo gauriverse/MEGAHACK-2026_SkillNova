@@ -4,7 +4,7 @@ from typing import List
 from models.user import User
 from models.burnout_assessment import BurnoutAssessment
 from models.recommendation import Recommendation
-from schemas import AssessmentRequest, BurnoutAssessmentResponse, RecommendationResponse, PaginatedResponse
+from backend.schemas.schemas import AssessmentRequest, BurnoutAssessmentResponse, RecommendationResponse, PaginatedResponse
 from core.security import get_current_user
 from services.analytics import aggregate_features
 from services.burnout_predictor import burnout_predictor

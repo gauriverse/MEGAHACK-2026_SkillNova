@@ -4,7 +4,7 @@ from datetime import datetime
 
 from models.user import User
 from models.sleep_log import SleepLog
-from schemas import SleepLogCreate, SleepLogResponse, PaginatedResponse
+from backend.schemas.schemas import SleepLogCreate, SleepLogResponse, PaginatedResponse
 from core.security import get_current_user
 
 router = APIRouter(prefix="/sleep-logs", tags=["Sleep Logs"])

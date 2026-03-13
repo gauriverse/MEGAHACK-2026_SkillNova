@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 from models.user import User
 from models.recommendation import Recommendation
-from schemas import RecommendationResponse, RecommendationUpdate, PaginatedResponse
+from backend.schemas.schemas import RecommendationResponse, RecommendationUpdate, PaginatedResponse
 from core.security import get_current_user
 
 router = APIRouter(prefix="/recommendations", tags=["Recommendations"])

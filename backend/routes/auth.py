@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from models.user import User
-from schemas import UserRegister, UserLogin, TokenResponse, RefreshTokenRequest, UserResponse, MessageResponse
+from backend.schemas.schemas import UserRegister, UserLogin, TokenResponse, RefreshTokenRequest, UserResponse, MessageResponse
 from core.security import (
     hash_password, verify_password,
     create_access_token, create_refresh_token,

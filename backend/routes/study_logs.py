@@ -5,7 +5,7 @@ from beanie import PydanticObjectId
 
 from models.user import User
 from models.study_log import StudyLog
-from schemas import StudyLogCreate, StudyLogUpdate, StudyLogResponse, PaginatedResponse
+from backend.schemas.schemas import StudyLogCreate, StudyLogUpdate, StudyLogResponse, PaginatedResponse
 from core.security import get_current_user
 
 router = APIRouter(prefix="/study-logs", tags=["Study Logs"])
